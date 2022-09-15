@@ -2,13 +2,16 @@ function setup() {
 
   createCanvas(1000, 1000);
   let n = randfx(1,5) // number of rows/shapes
-  let p = randfx(1,10) // palette number
+  // let p = randfx(1,10) // palette number
+  let p = 1
   var pal
   var r0; var g0; var b0
   var r1; var g1; var b1
   if (p <= 2) { // choose palette
     r0 = 0; g0 = 0; b0 = 0
     r1 = 255; g1 = 255; b1 = 255
+    // r0 = 205; g0 = 195; b0 = 175
+    // r1 = 30; g1 = 20; b1 = 20
     pal = "black/white"
   } else if (p > 2 && p <=4) {
     r0 = 222; g0 = 222; b0 = 222
@@ -37,9 +40,13 @@ function setup() {
     oarray[i] = randfx(1,200)
   }
 
+  let t = 0
   stroke(r1,g1,b1) // draw scratches
   for (let i=1;i<=n;i+=1) { 
     scratch(yarray[i],randfx(5,10),randfx(1,100),oarray[i])
+    if (oarray[i] <= 5) {
+      t += 1
+    }
   }
 
   fill(r0,g0,b0) // frame
@@ -58,6 +65,7 @@ function setup() {
   noStroke() // draw shapes
   if (p <= 2) {
     blendMode(DIFFERENCE)
+    // blendMode(OVERLAY)
   } else {
     blendMode(HARD_LIGHT)
   }
@@ -71,8 +79,8 @@ function setup() {
     const x2 = x + randfx(-5,5)
     const y = random(1) * height
     const y2 = y + randfx(-5,5)
-    stroke(randfx(0,20))
-    strokeWeight(randfx(1,150)/100)
+    stroke(randfx(1,20))
+    strokeWeight(randfx(1,100)/100)
     if (p <= 2) { // noise blend modes
       blendMode(EXCLUSION)
     } else if (p > 2 && p <=4) {
@@ -91,7 +99,8 @@ function setup() {
 
   window.$fxhashFeatures = { // fxhash features
     "scratch instances": n,
-    "palette colors": pal
+    "color palette": pal,
+    "narrow scratches": t
   }
 
 }
@@ -112,7 +121,7 @@ function scratch(y,x1,x2,o) { // ylocation,xdensity,xvariance,yoffset
 
 // draw shapes
 function shapes(y,o) { // ylocation,yoffset
-  let shapexloc = randfx(100,900)
+  let shapexloc = randfx(75,925)
   let shapesize = randfx(25,100)
   let shapeyvar = randfx(-o,o)
   circle(shapexloc,y+shapeyvar,shapesize)
